@@ -82,7 +82,7 @@ int main(void)
 
   GPIO_Init(GPIOA, &gpioInitStruc);
 
-  GPIO_SetBits(GPIOA, GPIO_Pin_5);
+  /*GPIO_SetBits(GPIOA, GPIO_Pin_5);//////>>>>>>>>>> should not be here at all, even in previous commits!!!!!!
 
 
   GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
@@ -95,21 +95,16 @@ int main(void)
   else
 	  GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
 
-
-
-
-
-
-  /*
+*/
 
   gpioInitStruc.GPIO_Pin = GPIO_Pin_13;
   gpioInitStruc.GPIO_Mode = GPIO_Mode_IN;
   gpioInitStruc.GPIO_OType = GPIO_OType_PP;
-  gpioInitStruc.GPIO_PuPd = GPIO_PuPd_OF;
+  gpioInitStruc.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
   GPIO_Init(GPIOC,&gpioInitStruc);
 
-  uint8_t buttonState = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13);
+  //uint8_t buttonState = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13);
 
 
     /* Infinite loop */
