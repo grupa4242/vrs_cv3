@@ -107,7 +107,12 @@ int main (void)
 	button = !GPIO_ReadInputDataBit (GPIOC, GPIO_Pin_13);
 
 	uint64_t pocitadlo;
+	uint8_t buttonDebounceCnt = 0;
 
+#define btnDebounceMax 32
+#define btnDebounceHyst 18
+#define btnLimHi ((btnDebounceMax + btnDebounceHyst) / 2)
+#define btnLimLo ((btnDebounceMax - btnDebounceHyst) / 2)
 
 	/* Infinite loop */
 
@@ -115,24 +120,56 @@ int main (void)
 		{
 			/*
 
-			for (pocitadlo=0; pocitadlo<1000000; pocitadlo++)
-				{
-					GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
-				}
+			 for (pocitadlo=0; pocitadlo<1000000; pocitadlo++)
+			 {
+			 GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
+			 }
 
-			for (pocitadlo=0; pocitadlo<1000000; pocitadlo++)
-				{
-					GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_RESET);
-				}
+			 for (pocitadlo=0; pocitadlo<1000000; pocitadlo++)
+			 {
+			 GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_RESET);
+			 }
 
-				*/
+
+			 if (button)
+			 {
+			 GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
+			 }
+			 else
+			 GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_RESET);
+
+			 */
+
+			if (GPIO_ReadInputDataBit (GPIOC, GPIO_Pin_13))
+				{
+					if (buttonDebounceCnt)
+						buttonDebounceCnt--;
+				}
+			else
+				{
+
+					if (buttonDebounceCnt < btnDebounceMax - 2)
+						buttonDebounceCnt++;
+				}
 
 			if (button)
 				{
-					GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
+					if (buttonDebounceCnt < btnLimLo)
+						{
+							button = 0;
+						}
 				}
 			else
-				GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_RESET);
+				{
+					if (buttonDebounceCnt > btnLimHi)
+						{
+							button = 1;
+							if (GPIO_ReadOutputDataBit (GPIOA, GPIO_Pin_5))
+								GPIO_WriteBit (GPIOA, GPIO_Pin_5, Bit_RESET);
+							else
+								GPIO_WriteBit (GPIOA, GPIO_Pin_5, Bit_SET);
+						}
+				}
 
 		}
 	return 0;
