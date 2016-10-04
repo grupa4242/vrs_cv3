@@ -113,6 +113,8 @@ int main (void)
 
 	while (1)
 		{
+			/*
+
 			for (pocitadlo=0; pocitadlo<1000000; pocitadlo++)
 				{
 					GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
@@ -122,6 +124,16 @@ int main (void)
 				{
 					GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_RESET);
 				}
+
+				*/
+
+			if (button)
+				{
+					GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
+				}
+			else
+				GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_RESET);
+
 		}
 	return 0;
 }
