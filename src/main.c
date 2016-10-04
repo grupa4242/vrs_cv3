@@ -73,10 +73,10 @@ int main(void)
 
   GPIO_InitTypeDef gpioInitStruc;
 
+  gpioInitStruc.GPIO_Pin = GPIO_Pin_5;
   gpioInitStruc.GPIO_Mode = GPIO_Mode_OUT;
   gpioInitStruc.GPIO_OType = GPIO_OType_PP;
   gpioInitStruc.GPIO_PuPd = GPIO_PuPd_UP;
-  gpioInitStruc.GPIO_Pin = GPIO_Pin_5;
   gpioInitStruc.GPIO_Speed = GPIO_Speed_40MHz;
 
 
@@ -85,13 +85,27 @@ int main(void)
   GPIO_SetBits(GPIOA, GPIO_Pin_5);
 
 
+  GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
+  GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_RESET);
+
+  if (GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_5))
+  {
+	  GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_RESET);
+  }
+  else
+	  GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
+
+
+
+
+
+
   /*
 
-  gpioInitStruc.GPIO_Mode = GPIO_Mode_IN;
   gpioInitStruc.GPIO_Pin = GPIO_Pin_13;
+  gpioInitStruc.GPIO_Mode = GPIO_Mode_IN;
+  gpioInitStruc.GPIO_OType = GPIO_OType_PP;
   gpioInitStruc.GPIO_PuPd = GPIO_PuPd_OF;
-  gpioInitStruc.GPIO_Speed = GPIO_Speed_40MHz;
-
 
   GPIO_Init(GPIOC,&gpioInitStruc);
 
