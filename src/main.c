@@ -73,29 +73,38 @@ int main(void)
 
   GPIO_InitTypeDef gpioInitStruc;
 
+  gpioInitStruc.GPIO_Pin = GPIO_Pin_5;
   gpioInitStruc.GPIO_Mode = GPIO_Mode_OUT;
   gpioInitStruc.GPIO_OType = GPIO_OType_PP;
   gpioInitStruc.GPIO_PuPd = GPIO_PuPd_UP;
-  gpioInitStruc.GPIO_Pin = GPIO_Pin_5;
   gpioInitStruc.GPIO_Speed = GPIO_Speed_40MHz;
 
 
   GPIO_Init(GPIOA, &gpioInitStruc);
 
-  GPIO_SetBits(GPIOA, GPIO_Pin_5);
+  /*GPIO_SetBits(GPIOA, GPIO_Pin_5);//////>>>>>>>>>> should not be here at all, even in previous commits!!!!!!
 
 
-  /*
+  GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
+  GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_RESET);
 
-  gpioInitStruc.GPIO_Mode = GPIO_Mode_IN;
+  if (GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_5))
+  {
+	  GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_RESET);
+  }
+  else
+	  GPIO_WriteBit(GPIOA, GPIO_Pin_5,Bit_SET);
+
+*/
+
   gpioInitStruc.GPIO_Pin = GPIO_Pin_13;
-  gpioInitStruc.GPIO_PuPd = GPIO_PuPd_OF;
-  gpioInitStruc.GPIO_Speed = GPIO_Speed_40MHz;
-
+  gpioInitStruc.GPIO_Mode = GPIO_Mode_IN;
+  gpioInitStruc.GPIO_OType = GPIO_OType_PP;
+  gpioInitStruc.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
   GPIO_Init(GPIOC,&gpioInitStruc);
 
-  uint8_t buttonState = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13);
+  //uint8_t buttonState = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13);
 
 
     /* Infinite loop */
